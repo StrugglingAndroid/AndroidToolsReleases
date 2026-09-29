@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <base href="https://gitee.com/dlkw/android-tools-releases/raw/master/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android 综合工具箱</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI", sans-serif;
+            color: #2c3e50;
+            background: #f5f7fa;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .page {
+            position: relative;
+            min-height: 100%;
+            padding: 40px 48px 48px;
+        }
+
+        /* 右上角打赏信息卡片：固定悬浮，滚动时不随页面移动 */
+        .donation {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            width: 220px;
+            background: #ffffff;
+            border: 1px solid #ececec;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+            padding: 16px 16px 14px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .donation h3 {
+            font-size: 15px;
+            color: #e67e22;
+            margin-bottom: 4px;
+        }
+
+        .donation .tip {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 12px;
+        }
+
+        .donation .qr {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto;
+            border-radius: 8px;
+            background: #fafafa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .donation .qr img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .donation .qr .placeholder {
+            font-size: 12px;
+            color: #bbb;
+        }
+
+        .donation .foot {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #e74c3c;
+        }
+
+        /* 主体：产品介绍 */
+        .intro {
+            max-width: 720px;
+            padding-right: 244px; /* 给右上角卡片留出空间 */
+        }
+
+        .hero {
+            margin-bottom: 28px;
+        }
+
+        .hero .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero .logo .badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #3ddc84, #2bb673);
+            color: #fff;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero h1 {
+            font-size: 26px;
+            color: #1e1e1e;
+        }
+
+        .hero .subtitle {
+            margin-top: 12px;
+            font-size: 15px;
+            color: #5c6b7a;
+            line-height: 1.7;
+        }
+
+        .section-title {
+            font-size: 17px;
+            color: #1e1e1e;
+            margin: 28px 0 14px;
+            padding-left: 10px;
+            border-left: 4px solid #2bb673;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .feature {
+            background: #fff;
+            border: 1px solid #eef0f2;
+            border-radius: 10px;
+            padding: 14px 16px;
+            transition: box-shadow .2s, transform .2s;
+        }
+
+        .feature:hover {
+            box-shadow: 0 4px 14px rgba(43, 182, 115, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .feature .name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 6px;
+        }
+
+        .feature .name .ico {
+            margin-right: 6px;
+        }
+
+        .feature .desc {
+            font-size: 13px;
+            color: #7f8c9a;
+            line-height: 1.6;
+        }
+
+        .requirements {
+            background: #fff;
+            border: 1px solid #eef0f2;
+            border-radius: 10px;
+            padding: 16px 20px;
+        }
+
+        .requirements li {
+            list-style: none;
+            font-size: 13.5px;
+            color: #5c6b7a;
+            line-height: 2;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .requirements li::before {
+            content: "\2714";
+            position: absolute;
+            left: 0;
+            color: #2bb673;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 12.5px;
+            color: #aab2bd;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- 右上角：打赏信息 -->
+        <aside class="donation">
+            <h3>☕ 请作者喝杯咖啡</h3>
+            <div class="tip">本工具完全免费</div>
+            <div class="qr">
+                <!-- 二维码由程序在运行时注入 -->
+                <img id="qrImg" src="donation_qrcode.png" alt="打赏二维码"
+                     onerror="this.style.display='none';this.parentNode.innerHTML='<span class=&quot;placeholder&quot;>二维码</span>'">
+            </div>
+            <div class="foot">❤️ 您的支持是持续更新的动力</div>
+        </aside>
+
+        <!-- 主体：产品介绍 -->
+        <main class="intro">
+            <div class="hero">
+                <div class="logo">
+                    <div class="badge">🤖</div>
+                    <h1>Android 综合工具箱</h1>
+                </div>
+                <p class="subtitle">
+                    一款面向 Android 开发者的辅助工具，集<strong>批量签名、渠道打包、APK 加固、
+                    增量包生成、图标生成</strong>等常用功能于一体，简单易用、开箱即用。
+                </p>
+            </div>
+
+            <div class="section-title">核心功能</div>
+            <div class="features">
+                <div class="feature">
+                    <div class="name"><span class="ico">✍️</span>批量签名</div>
+                    <div class="desc">批量对多个 APK 文件进行签名，支持自定义输出目录。</div>
+                </div>
+                <div class="feature">
+                    <div class="name"><span class="ico">📦</span>渠道打包</div>
+                    <div class="desc">快速生成多渠道包，支持并行处理，速度快。</div>
+                </div>
+                <div class="feature">
+                    <div class="name"><span class="ico">🛡️</span>APK 加固</div>
+                    <div class="desc">对 APK 进行加固保护，支持多架构。</div>
+                </div>
+                <div class="feature">
+                    <div class="name"><span class="ico">🎨</span>图标生成</div>
+                    <div class="desc">一键生成多种尺寸的应用图标资源。</div>
+                </div>
+                <div class="feature">
+                    <div class="name"><span class="ico">🔄</span>增量包</div>
+                    <div class="desc">生成 APK 增量更新包，显著减少更新体积。</div>
+                </div>
+                <div class="feature">
+                    <div class="name"><span class="ico">🔍</span>APK 信息</div>
+                    <div class="desc">批量查看包名、版本号、签名信息等。</div>
+                </div>
+            </div>
+
+            <div class="section-title">系统要求</div>
+            <div class="requirements">
+                <ul>
+                    <li>Windows 7 SP1 及以上版本</li>
+                    <li>已安装 Java 8 或更高版本（渠道打包、加固所需）</li>
+                    <li>已配置 Android SDK</li>
+                </ul>
+            </div>
+
+            <div class="footer">
+                原始 APK 文件不会被修改，所有操作都会生成新文件 · 感谢使用 Android 综合工具箱
+            </div>
+        </main>
+    </div>
+</body>
+</html>
